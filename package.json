@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@stonly/design-system": "git+ssh://git@bitbucket.org/stonlybucket/stonly-design-system.git",
+    "@stonly/design-system": "file:./vendor/stonly-design-system",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "styled-components": "^6.1.19"
