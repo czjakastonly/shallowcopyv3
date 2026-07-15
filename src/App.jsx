@@ -12,7 +12,7 @@ import CreateShallowCopyModal from './components/CreateShallowCopyModal';
 import ShallowCopyToast from './components/ShallowCopyToast';
 import ShallowCopyInfoBar from './components/ShallowCopyInfoBar';
 import ViewOccurrencesPanel from './components/ViewOccurrencesPanel';
-import ShallowCopyRestrictedModal from './components/ShallowCopyRestrictedModal';
+import EditorView from './components/EditorView';
 import './App.css';
 
 const FOLDER_TREE_DATA = {
@@ -741,16 +741,6 @@ function App() {
     setOpenShallowCopyItem(null);
   }, []);
 
-  const handleOpenOriginalGuide = useCallback(() => {
-    const sourceItem = contentItems.find((i) => i.id === openShallowCopyItem?.sourceItemId);
-    setOpenShallowCopyItem(null);
-    if (sourceItem) {
-      navigateToFolder(sourceItem.folderId);
-      setCurrentView('content');
-      setScrollToItemId(sourceItem.id);
-    }
-  }, [contentItems, openShallowCopyItem, navigateToFolder]);
-
   const handleShallowCopyToastDismiss = useCallback(() => {
     setShallowCopyToastMessage(null);
   }, []);
@@ -805,6 +795,18 @@ function App() {
     (sum, f) => sum + (f.guides || 0),
     0
   );
+
+  if (openShallowCopyItem) {
+    return (
+      <EditorView
+        item={openShallowCopyItem}
+        breadcrumb={(findFolderPath(FOLDER_TREE_DATA, openShallowCopyItem.folderId) || [])
+          .map((p) => p.name)
+          .join(' > ')}
+        onBack={handleCloseShallowCopyDialog}
+      />
+    );
+  }
 
   return (
     <div className="app">
@@ -904,16 +906,6 @@ function App() {
             onCancel={handleCreateShallowCopyCancel}
           />
         </>
-      )}
-      {openShallowCopyItem && (
-        <ShallowCopyRestrictedModal
-          item={openShallowCopyItem}
-          breadcrumb={(findFolderPath(FOLDER_TREE_DATA, openShallowCopyItem.folderId) || [])
-            .map((p) => p.name)
-            .join(' > ')}
-          onOpenOriginal={handleOpenOriginalGuide}
-          onClose={handleCloseShallowCopyDialog}
-        />
       )}
       {showDetailsPopup && activeOperation && (
         <DetailsPopup
