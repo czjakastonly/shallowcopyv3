@@ -1,0 +1,353 @@
+.rd-view {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 16px 0;
+  overflow-y: auto;
+  height: 100%;
+}
+
+.rd-view-inner {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.rd-header-section {
+  padding-bottom: 8px;
+}
+
+.rd-header-title {
+  font-family: 'SF UI Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 22px;
+  color: #26282e;
+  padding: 12px 16px;
+}
+
+/* Action bar */
+.rd-action-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  background: #f7f7f9;
+  border-radius: 4px;
+}
+
+.rd-action-bar-left {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.rd-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.rd-action-btn:hover {
+  opacity: 0.8;
+}
+
+.rd-action-label {
+  font-family: 'SF UI Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  color: #5d6169;
+}
+
+.rd-action-bar-right {
+  display: flex;
+  align-items: center;
+}
+
+.rd-action-close-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.rd-action-close-btn:hover {
+  opacity: 0.8;
+}
+
+.rd-action-count {
+  font-family: 'SF UI Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  color: #5d6169;
+}
+
+/* Column headers */
+.rd-column-headers {
+  border-bottom: 1px solid white;
+  padding: 16px;
+  height: 48px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.rd-columns-inner {
+  display: flex;
+  align-items: center;
+  gap: 23px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.rd-col-header {
+  font-family: 'SF UI Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  color: #8b8e95;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.rd-col--name {
+  width: 360px;
+  flex-shrink: 0;
+}
+
+.rd-col--tags {
+  width: 100px;
+  flex-shrink: 0;
+}
+
+.rd-col--deleted {
+  width: 140px;
+  flex-shrink: 0;
+}
+
+.rd-col--days {
+  width: 130px;
+  flex-shrink: 0;
+  cursor: help;
+}
+
+/* Rows */
+.rd-rows {
+  display: flex;
+  flex-direction: column;
+}
+
+.rd-row {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 12px 16px;
+  cursor: default;
+  width: 100%;
+  position: relative;
+}
+
+.rd-row:hover {
+  background: #fafafa;
+}
+
+.rd-row--selected {
+  background: #fef7fa;
+}
+
+.rd-row-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  min-width: 0;
+  width: 360px;
+  flex-shrink: 0;
+}
+
+.rd-row-icon-wrapper {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rd-row-icon {
+  width: 32px;
+  height: 32px;
+}
+
+.rd-row-details {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.rd-row-title {
+  font-family: 'SF UI Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #26282e;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rd-row-path {
+  font-family: 'SF UI Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: #8b8e95;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rd-row-tags {
+  width: 100px;
+  flex-shrink: 0;
+}
+
+.rd-row-tags-text {
+  font-family: 'SF UI Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 24px;
+  color: #8b8e95;
+}
+
+.rd-row-deleted-date {
+  width: 140px;
+  flex-shrink: 0;
+}
+
+.rd-row-date-text {
+  font-family: 'SF UI Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 24px;
+  color: #8b8e95;
+}
+
+.rd-row-days-remaining {
+  width: 130px;
+  flex-shrink: 0;
+}
+
+.rd-row-days-text {
+  font-family: 'SF UI Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 24px;
+  color: #8b8e95;
+}
+
+.rd-row-days-text--urgent {
+  color: #d92034;
+}
+
+.rd-row-actions {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.rd-row-more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.rd-row-more:hover {
+  background: #f2f2f4;
+}
+
+.rd-menu-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+}
+
+.rd-row-menu {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  background: #ffffff;
+  border-radius: 6px;
+  box-shadow:
+    0px 2px 8px rgba(0, 0, 0, 0.12),
+    0px 0px 1px rgba(0, 0, 0, 0.08);
+  min-width: 140px;
+  padding: 4px 0;
+  z-index: 100;
+}
+
+.rd-menu-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 8px 16px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: 'SF UI Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 18px;
+  color: #26282e;
+}
+
+.rd-menu-item:hover {
+  background: #f7f7f9;
+}
+
+/* Empty state */
+.rd-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 40px;
+  text-align: center;
+}
+
+.rd-empty-icon {
+  margin-bottom: 16px;
+  opacity: 0.6;
+}
+
+.rd-empty-title {
+  font-family: 'SF UI Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 22px;
+  color: #26282e;
+  margin-bottom: 8px;
+}
+
+.rd-empty-text {
+  font-family: 'SF UI Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #8b8e95;
+  max-width: 320px;
+}

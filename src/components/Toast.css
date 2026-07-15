@@ -1,0 +1,127 @@
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  transform: translateY(100px);
+  z-index: 1000;
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.toast-container--visible {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.toast {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  background: #26282e;
+  border-radius: 4px;
+  box-shadow:
+    0px 0px 24px 0px rgba(0, 0, 0, 0.08),
+    0px 16px 24px 0px rgba(0, 0, 0, 0.08);
+  min-width: 380px;
+  max-width: 500px;
+}
+
+.toast-icon {
+  display: flex;
+  align-items: flex-start;
+  padding-top: 2px;
+  flex-shrink: 0;
+}
+
+.toast-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  gap: 2px;
+}
+
+.toast-message {
+  font-family: 'SF UI Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: white;
+}
+
+.toast-error {
+  font-family: 'SF UI Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: #d92034;
+}
+
+.toast-details-link {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: 'SF UI Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  color: #90caf9;
+  text-align: left;
+  margin-top: 2px;
+}
+
+.toast-details-link:hover {
+  text-decoration: underline;
+}
+
+.toast-actions-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.toast-abort-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  border: 1px solid #5d6169;
+  border-radius: 88px;
+  background: none;
+  cursor: pointer;
+  font-family: 'SF UI Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 12px;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+.toast-abort-btn:hover {
+  border-color: #8b8e95;
+}
+
+.toast-close-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 0;
+  opacity: 0.6;
+}
+
+.toast-close-btn:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.1);
+}

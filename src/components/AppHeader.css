@@ -1,0 +1,168 @@
+.app-header {
+  background: #262144;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  height: 136px;
+}
+
+.header-top-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  height: 52px;
+}
+
+.header-top-left {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.header-logo {
+  width: 95px;
+  height: 28px;
+}
+
+.main-navigation {
+  display: flex;
+  gap: 32px;
+}
+
+.nav-item {
+  font-family: 'SF UI Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  color: white;
+  opacity: 0.7;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.nav-item--active {
+  opacity: 1;
+}
+
+.header-top-right {
+  display: flex;
+  align-items: center;
+}
+
+.account-menu {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.account-name {
+  font-family: 'SF UI Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  color: white;
+}
+
+.account-chevron {
+  width: 12px;
+  height: 12px;
+}
+
+.header-bottom-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  height: 84px;
+}
+
+.team-selector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.team-name {
+  font-family: 'SF UI Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 40px;
+  letter-spacing: -0.56px;
+  color: white;
+}
+
+.team-arrow {
+  width: 12px;
+  height: 12px;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.search-bar {
+  width: 324px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 40px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.search-bar-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 24px 0 16px;
+}
+
+.search-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.search-placeholder {
+  font-family: 'SF UI Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  color: white;
+  opacity: 0.7;
+}
+
+.btn-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  background: #e61168;
+  border-radius: 18px;
+  border: none;
+  cursor: pointer;
+  gap: 4px;
+}
+
+.btn-primary:hover {
+  background: #d00f5e;
+}
+
+.btn-label {
+  font-family: 'SF UI Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  color: white;
+  padding: 0 8px;
+}
+
+.btn-chevron {
+  width: 16px;
+  height: 16px;
+  transform: scaleY(-1);
+}

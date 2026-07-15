@@ -1,0 +1,38 @@
+.checkbox {
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  border-radius: 3px;
+  box-sizing: border-box;
+}
+
+.checkbox--default {
+  background: white;
+  border: 1px solid #c1c0cb;
+}
+
+.checkbox--checked {
+  background: #e61168;
+  border: none;
+}
+
+.checkbox--partial {
+  background: #e61168;
+  border: none;
+}
+
+.checkbox--checked svg,
+.checkbox--partial svg {
+  width: 10px;
+  height: 10px;
+}
+
+.checkbox--disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+}

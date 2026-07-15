@@ -1,0 +1,200 @@
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  animation: modal-overlay-in 0.15s ease-out;
+}
+
+@keyframes modal-overlay-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-dialog {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 32px;
+  width: 480px;
+  max-width: calc(100vw - 48px);
+  box-shadow:
+    0px 0px 24px 0px rgba(0, 0, 0, 0.08),
+    0px 16px 24px 0px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  animation: modal-dialog-in 0.2s ease-out;
+}
+
+@keyframes modal-dialog-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.modal-icon {
+  margin-bottom: 16px;
+}
+
+.modal-title {
+  font-family: 'SF UI Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 22px;
+  color: #26282e;
+  margin-bottom: 12px;
+}
+
+.modal-body {
+  width: 100%;
+  margin-bottom: 24px;
+  text-align: left;
+}
+
+.modal-body--simple {
+  font-family: 'SF UI Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #5d6169;
+  text-align: center;
+}
+
+.modal-warning-block {
+  background: #fef7f7;
+  border: 1px solid #f5c6cb;
+  border-radius: 6px;
+  padding: 12px 16px;
+  margin-bottom: 12px;
+}
+
+.modal-warning-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.modal-warning-icon-text {
+  font-size: 14px;
+  line-height: 1;
+}
+
+.modal-warning-title {
+  font-family: 'SF UI Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 18px;
+  color: #c01c2e;
+}
+
+.modal-warning-subtitle {
+  font-family: 'SF UI Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: #8b4049;
+  margin-bottom: 8px;
+  margin-left: 22px;
+}
+
+.modal-folder-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-left: 22px;
+}
+
+.modal-folder-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.modal-folder-name {
+  font-family: 'SF UI Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 18px;
+  color: #26282e;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.modal-folder-count {
+  font-family: 'SF UI Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: #8b8e95;
+  flex-shrink: 0;
+}
+
+.modal-info-text {
+  font-family: 'SF UI Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 18px;
+  color: #5d6169;
+  margin-bottom: 4px;
+}
+
+.modal-info-text--muted {
+  color: #8b8e95;
+  font-size: 12px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  justify-content: flex-end;
+}
+
+.modal-btn {
+  font-family: 'SF UI Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  padding: 8px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  border: none;
+  transition: background 0.15s ease, opacity 0.15s ease;
+}
+
+.modal-btn--cancel {
+  background: none;
+  color: #5d6169;
+  border: 1px solid #d0d1d4;
+}
+
+.modal-btn--cancel:hover {
+  background: #f7f7f9;
+}
+
+.modal-btn--delete {
+  background: #d92034;
+  color: #ffffff;
+}
+
+.modal-btn--delete:hover {
+  background: #c01c2e;
+}
+
+.modal-btn:focus-visible {
+  outline: 2px solid #4a90d9;
+  outline-offset: 2px;
+}

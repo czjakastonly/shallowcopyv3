@@ -1,0 +1,125 @@
+.folder-tree {
+  width: 320px;
+  flex-shrink: 0;
+  border-right: 1px solid #e2e2e6;
+  background: white;
+  overflow-y: auto;
+  height: 100%;
+}
+
+.folder-tree-content {
+  display: flex;
+  flex-direction: column;
+  padding: 24px 16px;
+}
+
+.tree-node {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 10px 16px 10px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.tree-node:hover {
+  background: #f8f8f9;
+}
+
+.tree-node--active {
+  background: #f8f8f9;
+}
+
+.tree-node-left {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+.tree-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.tree-toggle-icon {
+  width: 16px;
+  height: 16px;
+  transform: rotate(0deg);
+  transition: transform 0.15s ease;
+}
+
+.tree-toggle-icon--expanded {
+  transform: rotate(90deg);
+}
+
+.tree-node-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.tree-node-name {
+  font-family: 'SF UI Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 14px;
+  color: #5d6169;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tree-node-name--dark {
+  color: #26282e;
+}
+
+.tree-root-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 4px;
+  background: #bfc1c6;
+  border-radius: 4px;
+  font-family: 'SF UI Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 600;
+  font-size: 11px;
+  line-height: 12px;
+  color: white;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.tree-lock-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.tree-add-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.tree-add-icon {
+  width: 16px;
+  height: 16px;
+}

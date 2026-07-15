@@ -1,0 +1,18 @@
+{
+  "diffPixels": 4751,
+  "totalPixels": 65805,
+  "diffPercent": 7.22,
+  "comparedRegion": {
+    "width": 205,
+    "height": 321
+  },
+  "referenceSize": {
+    "width": 213,
+    "height": 364
+  },
+  "actualSize": {
+    "width": 205,
+    "height": 321
+  },
+  "sizeMismatch": true
+}

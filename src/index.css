@@ -1,0 +1,31 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: 'SF UI Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* @stonly/design-system's ModalWindow doesn't set an explicit z-index, so an
+   explicitly z-indexed sibling (e.g. our fixed-position toasts/banners) would
+   otherwise stack above it regardless of DOM order. Force it above those. */
+.ston-modal-container {
+  z-index: 1200 !important;
+}
+
+/* Keep DS modals from growing tall enough to overlap the fixed-bottom
+   ShallowCopyInfoBar (~88px) on shorter viewports. */
+.ston-modal-main {
+  max-height: calc(100vh - 140px);
+  overflow-y: auto;
+}
