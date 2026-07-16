@@ -13,6 +13,7 @@ import ChecklistItemIcon from '@stonly/design-system/icons/ChecklistItem-color-1
 import OpenIcon from '@stonly/design-system/icons/Open-16';
 import layersIcon from '../icons/ds-missing/Layers-16.svg';
 import emptyEditorIcon from '../icons/ds-missing/EmptyEditor-72.svg';
+import GuideEditorBody from './GuideEditorBody';
 
 const Page = styled.div`
   width: 100%;
@@ -322,7 +323,7 @@ const DialogButtonIcon = styled.span`
   }
 `;
 
-function EditorView({ item, onBack, onRename }) {
+function EditorView({ item, onBack, onRename, onOpenOriginal }) {
   const [isEditingName, setIsEditingName] = useState(false);
   const [nameDraft, setNameDraft] = useState(item.name);
   const [activeTab, setActiveTab] = useState('editor');
@@ -378,19 +379,19 @@ function EditorView({ item, onBack, onRename }) {
                   onChange={(e) => setNameDraft(e.target.value)}
                   onBlur={commitRename}
                   onKeyDown={handleNameKeyDown}
-                  aria-label="Shallow copy name"
+                  aria-label="Guide name"
                 />
               ) : (
                 <>
                   <GuideTitle>{item.name}</GuideTitle>
-                  <EditButton type="button" onClick={handleStartEditing} aria-label="Rename this shallow copy">
+                  <EditButton type="button" onClick={handleStartEditing} aria-label="Rename">
                     <EditIconWrap aria-hidden>
                       <EditIcon />
                     </EditIconWrap>
                   </EditButton>
                 </>
               )}
-              <ShallowCopyBadge>Shallow copy</ShallowCopyBadge>
+              {item.isShallowCopy && <ShallowCopyBadge>Shallow copy</ShallowCopyBadge>}
             </GuideName>
           </Navigation>
           <SavingChanges>
@@ -438,22 +439,26 @@ function EditorView({ item, onBack, onRename }) {
           </Actions>
         </BottomBar>
       </Header>
-      <Body>
-        <EmptyState>
-          <img src={emptyEditorIcon} alt="" width={72} height={72} />
-          <EmptyStateText>
-            Editor unavailable for shallow copy.
-            <br />
-            To change content, edit the original guide.
-          </EmptyStateText>
-          <ButtonPrimary type="button" onClick={() => {}}>
-            <DialogButtonIcon aria-hidden>
-              <OpenIcon />
-            </DialogButtonIcon>
-            Open original guide
-          </ButtonPrimary>
-        </EmptyState>
-      </Body>
+      {item.isShallowCopy ? (
+        <Body>
+          <EmptyState>
+            <img src={emptyEditorIcon} alt="" width={72} height={72} />
+            <EmptyStateText>
+              Editor unavailable for shallow copy.
+              <br />
+              To change content, edit the original guide.
+            </EmptyStateText>
+            <ButtonPrimary type="button" onClick={onOpenOriginal}>
+              <DialogButtonIcon aria-hidden>
+                <OpenIcon />
+              </DialogButtonIcon>
+              Open original guide
+            </ButtonPrimary>
+          </EmptyState>
+        </Body>
+      ) : (
+        <GuideEditorBody item={item} />
+      )}
     </Page>
   );
 }

@@ -269,6 +269,7 @@ function App() {
   const [activeOccurrencesItemId, setActiveOccurrencesItemId] = useState(null);
   const [showOccurrencesPanel, setShowOccurrencesPanel] = useState(false);
   const [openShallowCopyItem, setOpenShallowCopyItem] = useState(null);
+  const [openOriginalGuideItem, setOpenOriginalGuideItem] = useState(null);
   const [scrollToItemId, setScrollToItemId] = useState(null);
   const [highlightedFolderIds, setHighlightedFolderIds] = useState(new Set());
 
@@ -794,6 +795,28 @@ function App() {
     [openShallowCopyItem]
   );
 
+  const handleOpenOriginalGuideEditor = useCallback(() => {
+    const sourceItem = contentItems.find((i) => i.id === openShallowCopyItem?.sourceItemId);
+    if (sourceItem) {
+      setOpenShallowCopyItem(null);
+      setOpenOriginalGuideItem(sourceItem);
+    }
+  }, [contentItems, openShallowCopyItem]);
+
+  const handleCloseOriginalGuideEditor = useCallback(() => {
+    setOpenOriginalGuideItem(null);
+  }, []);
+
+  const handleRenameOriginalGuide = useCallback(
+    (newName) => {
+      setContentItems((prev) =>
+        prev.map((i) => (i.id === openOriginalGuideItem.id ? { ...i, name: newName } : i))
+      );
+      setOpenOriginalGuideItem((prev) => (prev ? { ...prev, name: newName } : prev));
+    },
+    [openOriginalGuideItem]
+  );
+
   const handleShallowCopyToastDismiss = useCallback(() => {
     setShallowCopyToastMessage(null);
   }, []);
@@ -855,6 +878,17 @@ function App() {
         item={openShallowCopyItem}
         onBack={handleCloseShallowCopyDialog}
         onRename={handleRenameShallowCopy}
+        onOpenOriginal={handleOpenOriginalGuideEditor}
+      />
+    );
+  }
+
+  if (openOriginalGuideItem) {
+    return (
+      <EditorView
+        item={openOriginalGuideItem}
+        onBack={handleCloseOriginalGuideEditor}
+        onRename={handleRenameOriginalGuide}
       />
     );
   }
