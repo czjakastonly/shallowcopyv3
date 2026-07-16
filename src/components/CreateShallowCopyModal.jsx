@@ -11,7 +11,6 @@ import chevronIcon from '../icons/Icons/16px/Common/Search Copy.svg';
 import lockIcon from '../icons/Icons/16px/Common/Access rights.svg';
 import collapse16Icon from '../icons/ds-missing/Collapse-16.svg';
 import expand16Icon from '../icons/ds-missing/Expand-16.svg';
-import treeFolderRootIcon from '../icons/ds-missing/TreeFolderRoot-16.svg';
 import emptyFolderIcon from '../icons/ds-missing/EmptyFolder-72.svg';
 
 const Columns = styled.div`
@@ -179,6 +178,7 @@ const ReviewItem = styled.div`
 
 const ReviewItemIcon = styled.div`
   display: flex;
+  padding-top: 4px;
   flex-shrink: 0;
 `;
 
@@ -417,7 +417,7 @@ function CreateShallowCopyModal({ treeData, onConfirm, onCancel }) {
                   <ReviewItem key={s.id}>
                     <ReviewItemIcon>
                       {s.isRoot ? (
-                        <img src={treeFolderRootIcon} alt="" width={16} height={16} />
+                        <img src={rootIcon} alt="" width={16} height={16} />
                       ) : (
                         <img src={folderIcon} alt="" width={16} height={16} />
                       )}
