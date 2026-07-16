@@ -188,7 +188,7 @@ function CreateShallowCopyModal({ treeData, onConfirm, onCancel }) {
   const [selectedIds, setSelectedIds] = useState(new Set());
   const [expandedIds, setExpandedIds] = useState(new Set([treeData.children?.[0]?.id].filter(Boolean)));
   const [searchValue, setSearchValue] = useState('');
-  const [publishInstantly, setPublishInstantly] = useState(true);
+  const [publishInstantly, setPublishInstantly] = useState(false);
 
   const handleToggle = (id) => {
     setSelectedIds((prev) => {
