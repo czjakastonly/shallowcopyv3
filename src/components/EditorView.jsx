@@ -6,11 +6,13 @@ import GuideLinkIcon from '@stonly/design-system/icons/GuideLink-16';
 import EditIcon from '@stonly/design-system/icons/Edit-16';
 import EyeIcon from '@stonly/design-system/icons/Eye-16';
 import ShareIcon from '@stonly/design-system/icons/Share-16';
+import AiSummaryIcon from '@stonly/design-system/icons/AiSummary-16';
 import SettingsIcon from '@stonly/design-system/icons/Settings-16';
 import MoreIcon from '@stonly/design-system/icons/More-16';
 import ChecklistItemIcon from '@stonly/design-system/icons/ChecklistItem-color-16';
 import OpenIcon from '@stonly/design-system/icons/Open-16';
-import shallowCopyIcon from '../icons/ds-missing/ShallowCopy-XL.svg';
+import layersIcon from '../icons/ds-missing/Layers-16.svg';
+import emptyEditorIcon from '../icons/ds-missing/EmptyEditor-72.svg';
 
 const Page = styled.div`
   width: 100%;
@@ -152,10 +154,53 @@ const BottomBar = styled.div`
   gap: 16px;
 `;
 
-const TabsSpacer = styled.div`
+const Tabs = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 48px;
   flex: 1;
   min-width: 0;
-  height: 12px;
+  padding-left: 42px;
+`;
+
+const Tab = styled.button`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 0 4px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  ${({ theme }) => theme.typography.uiElementLabel};
+  color: ${({ theme, $active }) => ($active ? theme.color.textDefaultInverse : 'rgba(255, 255, 255, 0.7)')};
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -12px;
+    height: 2px;
+    background: ${({ theme, $active }) => ($active ? theme.color.backgroundPrimary : 'transparent')};
+  }
+`;
+
+const TabBadge = styled.span`
+  position: absolute;
+  top: -8px;
+  right: -16px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 8px;
+  background: ${({ theme }) => theme.color.backgroundPrimary};
+  color: ${({ theme }) => theme.color.textDefaultInverse};
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 16px;
+  text-align: center;
 `;
 
 const Actions = styled.div`
@@ -252,73 +297,20 @@ const Body = styled.div`
   min-height: 0;
 `;
 
-const DialogCard = styled.div`
-  width: 480px;
-  max-width: calc(100vw - 48px);
-  background: ${({ theme }) => theme.color.backgroundDefault};
-  border-radius: 4px;
-  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.08), 0px 0px 8px 0px rgba(0, 0, 0, 0.08);
-  display: flex;
-  flex-direction: column;
-`;
-
-const DialogContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 32px;
-  padding: 40px 32px;
-`;
-
-const IconCircle = styled.div`
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  background: ${({ theme }) => theme.color.backgroundPinkSubtle};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-`;
-
-const DialogText = styled.div`
+const EmptyState = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 16px;
-  width: 100%;
-  text-align: center;
+  width: 566px;
+  max-width: calc(100vw - 48px);
 `;
 
-const DialogTitle = styled.p`
-  ${({ theme }) => theme.typography.h2};
-  color: ${({ theme }) => theme.color.textDark};
-  margin: 0;
-`;
-
-const DialogBreadcrumb = styled.p`
-  ${({ theme }) => theme.typography.uiElement};
-  color: ${({ theme }) => theme.color.textSubtle};
-  margin: 0;
-`;
-
-const DialogDescription = styled.p`
-  ${({ theme }) => theme.typography.uiElement};
+const EmptyStateText = styled.p`
+  ${({ theme }) => theme.typography.h3};
   color: ${({ theme }) => theme.color.textDefault};
-  margin: 0;
-`;
-
-const DialogDivider = styled.div`
-  height: 1px;
-  width: 100%;
-  background: ${({ theme }) => theme.color.borderSubtle};
-`;
-
-const DialogButtons = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px 32px;
+  text-align: center;
+  margin: 0 0 16px;
 `;
 
 const DialogButtonIcon = styled.span`
@@ -330,9 +322,10 @@ const DialogButtonIcon = styled.span`
   }
 `;
 
-function EditorView({ item, breadcrumb, onBack, onRename }) {
+function EditorView({ item, onBack, onRename }) {
   const [isEditingName, setIsEditingName] = useState(false);
   const [nameDraft, setNameDraft] = useState(item.name);
+  const [activeTab, setActiveTab] = useState('editor');
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -406,7 +399,15 @@ function EditorView({ item, breadcrumb, onBack, onRename }) {
           </SavingChanges>
         </TopBar>
         <BottomBar>
-          <TabsSpacer />
+          <Tabs>
+            <Tab type="button" $active={activeTab === 'editor'} onClick={() => setActiveTab('editor')}>
+              Editor
+            </Tab>
+            <Tab type="button" $active={activeTab === 'insights'} onClick={() => setActiveTab('insights')}>
+              Insights
+              <TabBadge>3</TabBadge>
+            </Tab>
+          </Tabs>
           <Actions>
             <IconButtonGroup>
               <IconButton type="button" aria-label="Preview">
@@ -415,10 +416,17 @@ function EditorView({ item, breadcrumb, onBack, onRename }) {
               <IconButton type="button" aria-label="Share">
                 <ShareIcon />
               </IconButton>
+              <IconButton type="button" aria-label="AI summary">
+                <AiSummaryIcon />
+              </IconButton>
               <IconButton type="button" aria-label="Settings">
                 <SettingsIcon />
               </IconButton>
             </IconButtonGroup>
+            <Divider />
+            <IconButton type="button" aria-label="Layers">
+              <img src={layersIcon} alt="" width={16} height={16} />
+            </IconButton>
             <Divider />
             <LanguageButton type="button">EN</LanguageButton>
             <SplitButton>
@@ -431,30 +439,20 @@ function EditorView({ item, breadcrumb, onBack, onRename }) {
         </BottomBar>
       </Header>
       <Body>
-        <DialogCard role="dialog" aria-label={`${item.name} is a shallow copy`}>
-          <DialogContent>
-            <IconCircle>
-              <img src={shallowCopyIcon} alt="" width={40} height={40} />
-            </IconCircle>
-            <DialogText>
-              <DialogTitle>{item.name}</DialogTitle>
-              <DialogBreadcrumb>{breadcrumb}</DialogBreadcrumb>
-              <DialogDescription>
-                This is a shallow copy. To change its content, edit the original guide - updates will apply
-                automatically.
-              </DialogDescription>
-            </DialogText>
-          </DialogContent>
-          <DialogDivider />
-          <DialogButtons>
-            <ButtonPrimary type="button" onClick={() => {}}>
-              <DialogButtonIcon aria-hidden>
-                <OpenIcon />
-              </DialogButtonIcon>
-              Open original guide
-            </ButtonPrimary>
-          </DialogButtons>
-        </DialogCard>
+        <EmptyState>
+          <img src={emptyEditorIcon} alt="" width={72} height={72} />
+          <EmptyStateText>
+            Editor unavailable for shallow copy.
+            <br />
+            To change content, edit the original guide.
+          </EmptyStateText>
+          <ButtonPrimary type="button" onClick={() => {}}>
+            <DialogButtonIcon aria-hidden>
+              <OpenIcon />
+            </DialogButtonIcon>
+            Open original guide
+          </ButtonPrimary>
+        </EmptyState>
       </Body>
     </Page>
   );

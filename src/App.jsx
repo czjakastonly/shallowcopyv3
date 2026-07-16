@@ -853,9 +853,6 @@ function App() {
     return (
       <EditorView
         item={openShallowCopyItem}
-        breadcrumb={(findFolderPath(FOLDER_TREE_DATA, openShallowCopyItem.folderId) || [])
-          .map((p) => p.name)
-          .join(' > ')}
         onBack={handleCloseShallowCopyDialog}
         onRename={handleRenameShallowCopy}
       />
