@@ -12,6 +12,7 @@ import lockIcon from '../icons/Icons/16px/Common/Access rights.svg';
 import collapse16Icon from '../icons/ds-missing/Collapse-16.svg';
 import expand16Icon from '../icons/ds-missing/Expand-16.svg';
 import treeFolderRootIcon from '../icons/ds-missing/TreeFolderRoot-16.svg';
+import emptyFolderIcon from '../icons/ds-missing/EmptyFolder-72.svg';
 
 const Columns = styled.div`
   display: flex;
@@ -122,6 +123,22 @@ const ReviewList = styled.div`
   flex-direction: column;
   gap: 8px;
   width: 100%;
+`;
+
+const ReviewEmptyState = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  flex: 1;
+  width: 100%;
+`;
+
+const ReviewEmptyStateText = styled.p`
+  ${({ theme }) => theme.typography.uiElement};
+  color: ${({ theme }) => theme.color.textDefault};
+  margin: 0;
 `;
 
 const ReviewItemRemove = styled.button`
@@ -389,37 +406,44 @@ function CreateShallowCopyModal({ treeData, onConfirm, onCancel }) {
             <ReviewHeader>
               Review locations <strong>({selectedList.length})</strong>
             </ReviewHeader>
-            <ReviewList>
-              {selectedList.map((s) => (
-                <ReviewItem key={s.id}>
-                  <ReviewItemIcon>
-                    {s.isRoot ? (
-                      <img src={treeFolderRootIcon} alt="" width={16} height={16} />
-                    ) : (
-                      <img src={folderIcon} alt="" width={16} height={16} />
-                    )}
-                  </ReviewItemIcon>
-                  <ReviewItemBody>
-                    <ReviewItemTitleRow>
-                      <ReviewItemTitle>{s.name}</ReviewItemTitle>
-                      {s.isRoot && (
-                        <RootBadgeWrap>
-                          <BadgeLabel variant="neutral">Root</BadgeLabel>
-                        </RootBadgeWrap>
+            {selectedList.length === 0 ? (
+              <ReviewEmptyState>
+                <img src={emptyFolderIcon} alt="" width={72} height={72} />
+                <ReviewEmptyStateText>No location picked</ReviewEmptyStateText>
+              </ReviewEmptyState>
+            ) : (
+              <ReviewList>
+                {selectedList.map((s) => (
+                  <ReviewItem key={s.id}>
+                    <ReviewItemIcon>
+                      {s.isRoot ? (
+                        <img src={treeFolderRootIcon} alt="" width={16} height={16} />
+                      ) : (
+                        <img src={folderIcon} alt="" width={16} height={16} />
                       )}
-                    </ReviewItemTitleRow>
-                    <ReviewItemPath>{s.path}</ReviewItemPath>
-                  </ReviewItemBody>
-                  <ReviewItemRemove
-                    type="button"
-                    onClick={() => handleToggle(s.id)}
-                    aria-label={`Remove ${s.name}`}
-                  >
-                    <CloseIcon />
-                  </ReviewItemRemove>
-                </ReviewItem>
-              ))}
-            </ReviewList>
+                    </ReviewItemIcon>
+                    <ReviewItemBody>
+                      <ReviewItemTitleRow>
+                        <ReviewItemTitle>{s.name}</ReviewItemTitle>
+                        {s.isRoot && (
+                          <RootBadgeWrap>
+                            <BadgeLabel variant="neutral">Root</BadgeLabel>
+                          </RootBadgeWrap>
+                        )}
+                      </ReviewItemTitleRow>
+                      <ReviewItemPath>{s.path}</ReviewItemPath>
+                    </ReviewItemBody>
+                    <ReviewItemRemove
+                      type="button"
+                      onClick={() => handleToggle(s.id)}
+                      aria-label={`Remove ${s.name}`}
+                    >
+                      <CloseIcon />
+                    </ReviewItemRemove>
+                  </ReviewItem>
+                ))}
+              </ReviewList>
+            )}
           </Column>
         </Columns>
       </ActionsDialog>
