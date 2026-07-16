@@ -31,7 +31,7 @@ function RowActionsMenu({
         <Action label="Edit rights" iconLeft={<EditIcon />} action={() => onEditRights?.(item)} />
         <Action label="Move to..." iconLeft={<MoveToIcon />} action={() => onMoveTo?.(item)} />
         <Action label="Duplicate" iconLeft={<CopyIcon />} action={() => onDuplicate?.(item)} />
-        {!item.isShallowCopy && (
+        {!item.isShallowCopy && item.type !== 'folder' && (
           <Action
             label="Create shallow copy"
             iconLeft={<GuideLinkIcon />}
