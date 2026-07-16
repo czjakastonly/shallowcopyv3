@@ -22,7 +22,7 @@
 
 @keyframes content-row-highlight-flash {
   0% {
-    background: #ffe0ed;
+    background: #ddf3e8;
   }
   100% {
     background: transparent;

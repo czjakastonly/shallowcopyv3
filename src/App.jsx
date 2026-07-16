@@ -745,7 +745,7 @@ function App() {
 
       const destinationFolderIds = new Set(selectedLocations.map((location) => location.id));
       setHighlightedFolderIds(destinationFolderIds);
-      setTimeout(() => setHighlightedFolderIds(new Set()), 1600);
+      setTimeout(() => setHighlightedFolderIds(new Set()), 3000);
     },
     [shallowCopyItem]
   );

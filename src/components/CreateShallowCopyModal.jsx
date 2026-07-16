@@ -241,15 +241,17 @@ function CreateShallowCopyModal({ treeData, onConfirm, onCancel }) {
         secondaryLabel="Cancel"
         secondaryAction={onCancel}
         closeAction={onCancel}
-        tertiaryRender={() => (
-          <PublishToggle>
-            <Checkbox
-              state={publishInstantly ? 'checked' : 'default'}
-              onChange={() => setPublishInstantly((prev) => !prev)}
-            />
-            <PublishToggleLabel>Publish all instantly</PublishToggleLabel>
-          </PublishToggle>
-        )}
+        tertiaryRender={() =>
+          selectedIds.size > 0 && (
+            <PublishToggle>
+              <Checkbox
+                state={publishInstantly ? 'checked' : 'default'}
+                onChange={() => setPublishInstantly((prev) => !prev)}
+              />
+              <PublishToggleLabel>Publish all instantly</PublishToggleLabel>
+            </PublishToggle>
+          )
+        }
       >
         <FilterRow>
           <SearchWrap>

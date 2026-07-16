@@ -32,7 +32,7 @@
 }
 
 .tree-node--highlight {
-  animation: tree-node-highlight-flash 1.6s ease-out;
+  animation: tree-node-highlight-flash 3s ease-out;
 }
 
 @keyframes tree-node-highlight-flash {
