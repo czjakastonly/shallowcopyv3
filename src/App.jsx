@@ -12,6 +12,7 @@ import CreateShallowCopyModal from './components/CreateShallowCopyModal';
 import ShallowCopyToast from './components/ShallowCopyToast';
 import ShallowCopyInfoBar from './components/ShallowCopyInfoBar';
 import DeleteShallowCopyModal from './components/DeleteShallowCopyModal';
+import GuideInUseModal from './components/GuideInUseModal';
 import ViewOccurrencesPanel from './components/ViewOccurrencesPanel';
 import EditorView from './components/EditorView';
 import './App.css';
@@ -256,6 +257,7 @@ function App() {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [pendingDeleteIds, setPendingDeleteIds] = useState([]);
   const [deleteShallowCopyItem, setDeleteShallowCopyItem] = useState(null);
+  const [guideInUseItem, setGuideInUseItem] = useState(null);
   const [activeOperation, setActiveOperation] = useState(null);
   const [showDetailsPopup, setShowDetailsPopup] = useState(false);
   const [toastDismissed, setToastDismissed] = useState(false);
@@ -482,14 +484,35 @@ function App() {
     setShowDeleteConfirm(true);
   }, [selectedItems]);
 
-  const handleRowDelete = useCallback((item) => {
-    if (item.isShallowCopy) {
-      setDeleteShallowCopyItem(item);
-      return;
-    }
-    setPendingDeleteIds([item.id]);
-    setShowDeleteConfirm(true);
+  const handleRowDelete = useCallback(
+    (item) => {
+      if (item.isShallowCopy) {
+        setDeleteShallowCopyItem(item);
+        return;
+      }
+      if ((occurrencesByItemId[item.id] || []).length > 0) {
+        setGuideInUseItem(item);
+        return;
+      }
+      setPendingDeleteIds([item.id]);
+      setShowDeleteConfirm(true);
+    },
+    [occurrencesByItemId]
+  );
+
+  const handleCancelGuideInUse = useCallback(() => {
+    setGuideInUseItem(null);
   }, []);
+
+  const handleOpenGuideInUseOccurrence = useCallback(
+    (occurrence) => {
+      navigateToFolder(occurrence.folderId);
+      setCurrentView('content');
+      setGuideInUseItem(null);
+      setScrollToItemId(occurrence.id);
+    },
+    [navigateToFolder]
+  );
 
   const handleConfirmDeleteShallowCopy = useCallback(() => {
     const item = deleteShallowCopyItem;
@@ -961,6 +984,13 @@ function App() {
           item={deleteShallowCopyItem}
           onConfirm={handleConfirmDeleteShallowCopy}
           onCancel={handleCancelDeleteShallowCopy}
+        />
+      )}
+      {guideInUseItem && (
+        <GuideInUseModal
+          occurrences={occurrencesByItemId[guideInUseItem.id] || []}
+          onOpen={handleOpenGuideInUseOccurrence}
+          onCancel={handleCancelGuideInUse}
         />
       )}
       {showToast && (
