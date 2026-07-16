@@ -3,6 +3,9 @@ import styled from 'styled-components';
 import { ButtonPrimary } from '@stonly/design-system';
 import ChevronLeftIcon from '@stonly/design-system/icons/ChevronLeft-16';
 import GuideLinkIcon from '@stonly/design-system/icons/GuideLink-16';
+import GuideColorIcon from '@stonly/design-system/icons/Guide-color-32';
+import ArticleColorIcon from '@stonly/design-system/icons/Article-color-32';
+import GuidedTourColorIcon from '@stonly/design-system/icons/GuidedTour-color-32';
 import EditIcon from '@stonly/design-system/icons/Edit-16';
 import EyeIcon from '@stonly/design-system/icons/Eye-16';
 import ShareIcon from '@stonly/design-system/icons/Share-16';
@@ -77,7 +80,7 @@ const GuideName = styled.div`
   gap: 8px;
   min-width: 0;
 
-  path {
+  > svg path {
     fill: ${({ theme }) => theme.color.borderPrimary};
   }
 
@@ -323,6 +326,12 @@ const DialogButtonIcon = styled.span`
   }
 `;
 
+function getGuideTypeIcon(type) {
+  if (type === 'article') return ArticleColorIcon;
+  if (type === 'tour' || type === 'guidedTour') return GuidedTourColorIcon;
+  return GuideColorIcon;
+}
+
 function EditorView({ item, onBack, onRename, onOpenOriginal }) {
   const [isEditingName, setIsEditingName] = useState(false);
   const [nameDraft, setNameDraft] = useState(item.name);
@@ -370,7 +379,14 @@ function EditorView({ item, onBack, onRename, onOpenOriginal }) {
               <ChevronLeftIcon width={24} height={24} />
             </BackButton>
             <GuideName>
-              <GuideLinkIcon width={32} height={32} />
+              {item.isShallowCopy ? (
+                <GuideLinkIcon width={32} height={32} />
+              ) : (
+                (() => {
+                  const TypeIcon = getGuideTypeIcon(item.type);
+                  return <TypeIcon width={32} height={32} />;
+                })()
+              )}
               {isEditingName ? (
                 <GuideTitleInput
                   ref={inputRef}
