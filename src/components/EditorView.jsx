@@ -1,7 +1,9 @@
+import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { ButtonPrimary } from '@stonly/design-system';
 import ChevronLeftIcon from '@stonly/design-system/icons/ChevronLeft-16';
 import GuideLinkIcon from '@stonly/design-system/icons/GuideLink-16';
+import EditIcon from '@stonly/design-system/icons/Edit-16';
 import EyeIcon from '@stonly/design-system/icons/Eye-16';
 import ShareIcon from '@stonly/design-system/icons/Share-16';
 import SettingsIcon from '@stonly/design-system/icons/Settings-16';
@@ -55,6 +57,17 @@ const BackButton = styled.button`
   }
 `;
 
+const EditIconWrap = styled.span`
+  display: inline-flex;
+  flex-shrink: 0;
+  opacity: 0;
+  transition: opacity 0.15s;
+
+  path {
+    fill: ${({ theme }) => theme.color.iconDefaultInverse};
+  }
+`;
+
 const GuideName = styled.div`
   display: flex;
   align-items: center;
@@ -63,6 +76,10 @@ const GuideName = styled.div`
 
   path {
     fill: ${({ theme }) => theme.color.borderPrimary};
+  }
+
+  &:hover ${EditIconWrap} {
+    opacity: 1;
   }
 `;
 
@@ -73,6 +90,33 @@ const GuideTitle = styled.p`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+`;
+
+const EditButton = styled.button`
+  display: inline-flex;
+  border: none;
+  background: none;
+  padding: 4px;
+  margin: -4px;
+  cursor: pointer;
+  flex-shrink: 0;
+`;
+
+const GuideTitleInput = styled.input`
+  ${({ theme }) => theme.typography.h1};
+  color: ${({ theme }) => theme.color.textDefaultInverse};
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid ${({ theme }) => theme.color.borderDefaultHover};
+  border-radius: 4px;
+  padding: 0 4px;
+  margin: 0 -4px;
+  min-width: 0;
+  max-width: 480px;
+
+  &:focus {
+    outline: none;
+    border-color: ${({ theme }) => theme.color.borderFocus};
+  }
 `;
 
 const ShallowCopyBadge = styled.span`
@@ -286,7 +330,43 @@ const DialogButtonIcon = styled.span`
   }
 `;
 
-function EditorView({ item, breadcrumb, onBack }) {
+function EditorView({ item, breadcrumb, onBack, onRename }) {
+  const [isEditingName, setIsEditingName] = useState(false);
+  const [nameDraft, setNameDraft] = useState(item.name);
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (isEditingName) {
+      inputRef.current?.focus();
+      inputRef.current?.select();
+    }
+  }, [isEditingName]);
+
+  const handleStartEditing = () => {
+    setNameDraft(item.name);
+    setIsEditingName(true);
+  };
+
+  const commitRename = () => {
+    const trimmed = nameDraft.trim();
+    if (trimmed && trimmed !== item.name) {
+      onRename?.(trimmed);
+    } else {
+      setNameDraft(item.name);
+    }
+    setIsEditingName(false);
+  };
+
+  const handleNameKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      commitRename();
+    } else if (e.key === 'Escape') {
+      setNameDraft(item.name);
+      setIsEditingName(false);
+    }
+  };
+
   return (
     <Page>
       <Header>
@@ -297,7 +377,26 @@ function EditorView({ item, breadcrumb, onBack }) {
             </BackButton>
             <GuideName>
               <GuideLinkIcon width={32} height={32} />
-              <GuideTitle>{item.name}</GuideTitle>
+              {isEditingName ? (
+                <GuideTitleInput
+                  ref={inputRef}
+                  value={nameDraft}
+                  size={Math.max(nameDraft.length, 1)}
+                  onChange={(e) => setNameDraft(e.target.value)}
+                  onBlur={commitRename}
+                  onKeyDown={handleNameKeyDown}
+                  aria-label="Shallow copy name"
+                />
+              ) : (
+                <>
+                  <GuideTitle>{item.name}</GuideTitle>
+                  <EditButton type="button" onClick={handleStartEditing} aria-label="Rename this shallow copy">
+                    <EditIconWrap aria-hidden>
+                      <EditIcon />
+                    </EditIconWrap>
+                  </EditButton>
+                </>
+              )}
               <ShallowCopyBadge>Shallow copy</ShallowCopyBadge>
             </GuideName>
           </Navigation>

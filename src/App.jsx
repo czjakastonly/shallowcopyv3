@@ -778,6 +778,16 @@ function App() {
     setOpenShallowCopyItem(null);
   }, []);
 
+  const handleRenameShallowCopy = useCallback(
+    (newName) => {
+      setContentItems((prev) =>
+        prev.map((i) => (i.id === openShallowCopyItem.id ? { ...i, name: newName } : i))
+      );
+      setOpenShallowCopyItem((prev) => (prev ? { ...prev, name: newName } : prev));
+    },
+    [openShallowCopyItem]
+  );
+
   const handleShallowCopyToastDismiss = useCallback(() => {
     setShallowCopyToastMessage(null);
   }, []);
@@ -841,6 +851,7 @@ function App() {
           .map((p) => p.name)
           .join(' > ')}
         onBack={handleCloseShallowCopyDialog}
+        onRename={handleRenameShallowCopy}
       />
     );
   }
