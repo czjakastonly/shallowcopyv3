@@ -1,8 +1,7 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
-import { ModalWindow, ActionsDialog, BadgeLabel } from '@stonly/design-system';
+import { ModalWindow, ActionsDialog } from '@stonly/design-system';
 import SearchIcon from '@stonly/design-system/icons/Search-16';
-import CloseIcon from '@stonly/design-system/icons/Close-16';
 import Checkbox from './Checkbox';
 import './FolderTree.css';
 import folderIcon from '../icons/Icons/16px/Categories/Folder.svg';
@@ -11,79 +10,22 @@ import chevronIcon from '../icons/Icons/16px/Common/Search Copy.svg';
 import lockIcon from '../icons/Icons/16px/Common/Access rights.svg';
 import collapse16Icon from '../icons/ds-missing/Collapse-16.svg';
 import expand16Icon from '../icons/ds-missing/Expand-16.svg';
-import emptyFolderIcon from '../icons/ds-missing/EmptyFolder-72.svg';
 
-const Columns = styled.div`
-  display: flex;
-  align-items: stretch;
-  width: 100%;
-  min-height: 400px;
-  margin: 0 -32px;
-`;
-
-const Column = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  flex: 1;
-  min-width: 0;
-  padding: 0 24px;
-
-  & + & {
-    border-left: 1px solid ${({ theme }) => theme.color.borderSubtle};
-  }
-`;
-
-const SectionLabel = styled.p`
-  ${({ theme }) => theme.typography.uiElementLabel};
-  color: ${({ theme }) => theme.color.textSubtle};
-  text-transform: uppercase;
-  margin: 0;
-`;
-
-const LocationsHeader = styled.div`
+const FilterRow = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
-`;
-
-const ReviewHeader = styled.p`
-  ${({ theme }) => theme.typography.uiElementLabel};
-  color: ${({ theme }) => theme.color.textSubtle};
-  text-transform: uppercase;
-  margin: 0;
-
-  strong {
-    color: ${({ theme }) => theme.color.textDark};
-    font-weight: inherit;
-  }
-`;
-
-const LocationsHeaderActions = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-`;
-
-const TreeHeaderIconButton = styled.button`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 16px;
-  height: 16px;
-  border: none;
-  background: none;
-  padding: 0;
-  cursor: pointer;
-`;
-
-const SearchRow = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  gap: 16px;
   width: 100%;
   padding: 8px 4px;
+`;
+
+const SearchWrap = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
 
   path {
     fill: ${({ theme }) => theme.color.iconSubtle};
@@ -104,108 +46,44 @@ const SearchInput = styled.input`
   }
 `;
 
-const TreeWrap = styled.div`
+const FilterActions = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  width: 100%;
-  max-height: 280px;
-  overflow-y: auto;
-`;
-
-const RootBadgeWrap = styled.span`
-  margin-left: 4px;
-`;
-
-const ReviewList = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  width: 100%;
-`;
-
-const ReviewEmptyState = styled.div`
-  display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 0;
-  flex: 1;
-  width: 100%;
+  gap: 8px;
+  flex-shrink: 0;
 `;
 
-const ReviewEmptyStateText = styled.p`
-  ${({ theme }) => theme.typography.uiElement};
-  color: ${({ theme }) => theme.color.textDefault};
-  margin: 0;
-`;
-
-const ReviewItemRemove = styled.button`
+const TreeHeaderIconButton = styled.button`
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 16px;
   height: 16px;
-  flex-shrink: 0;
   border: none;
   background: none;
   padding: 0;
   cursor: pointer;
-  visibility: hidden;
-
-  path {
-    fill: ${({ theme }) => theme.color.iconDefault};
-  }
 `;
 
-const ReviewItem = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  width: 100%;
-  padding: 8px 16px;
-  border-radius: 4px;
-  background: transparent;
-
-  &:hover {
-    background: ${({ theme }) => theme.color.backgroundDefaultHover};
-  }
-
-  &:hover ${ReviewItemRemove} {
-    visibility: visible;
-  }
-`;
-
-const ReviewItemIcon = styled.div`
-  display: flex;
-  padding-top: 4px;
-  flex-shrink: 0;
-`;
-
-const ReviewItemBody = styled.div`
+const TreeWrap = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  flex: 1;
-  min-width: 0;
+  align-items: stretch;
+  width: 100%;
+  max-height: 320px;
+  overflow-y: auto;
 `;
 
-const ReviewItemTitleRow = styled.div`
+const PublishToggle = styled.label`
   display: flex;
   align-items: center;
   gap: 8px;
+  cursor: pointer;
 `;
 
-const ReviewItemTitle = styled.p`
-  ${({ theme }) => theme.typography.uiElementStrong};
+const PublishToggleLabel = styled.span`
+  ${({ theme }) => theme.typography.uiElement};
   color: ${({ theme }) => theme.color.textDefault};
-  margin: 0;
-`;
-
-const ReviewItemPath = styled.p`
-  ${({ theme }) => theme.typography.uiElementSmall};
-  color: ${({ theme }) => theme.color.textSubtle};
-  margin: 0;
 `;
 
 function collectAllFolderIds(node, ids = []) {
@@ -310,6 +188,7 @@ function CreateShallowCopyModal({ treeData, onConfirm, onCancel }) {
   const [selectedIds, setSelectedIds] = useState(new Set());
   const [expandedIds, setExpandedIds] = useState(new Set([treeData.children?.[0]?.id].filter(Boolean)));
   const [searchValue, setSearchValue] = useState('');
+  const [publishInstantly, setPublishInstantly] = useState(true);
 
   const handleToggle = (id) => {
     setSelectedIds((prev) => {
@@ -339,113 +218,71 @@ function CreateShallowCopyModal({ treeData, onConfirm, onCancel }) {
 
   const rootLabel = (treeData.name || '').split(' ')[0];
 
-  const selectedList = useMemo(
-    () =>
-      [...selectedIds].map((id) => {
-        const node = findNode(treeData, id) || { name: id, type: 'folder' };
-        const ancestors = findPath(treeData, id) || [node.name];
-        const path = [rootLabel, ...ancestors].join(' > ');
-        return { id, name: node.name, isRoot: node.type === 'root', path };
-      }),
-    [selectedIds, treeData, rootLabel]
-  );
-
   const query = searchValue.trim().toLowerCase();
+
+  const handleCreate = () => {
+    const selectedList = [...selectedIds].map((id) => {
+      const node = findNode(treeData, id) || { name: id, type: 'folder' };
+      const ancestors = findPath(treeData, id) || [node.name];
+      const path = [rootLabel, ...ancestors].join(' > ');
+      return { id, name: node.name, isRoot: node.type === 'root', path };
+    });
+    onConfirm(selectedList, publishInstantly);
+  };
 
   return (
     <ModalWindow onBackdropClick={onCancel}>
       <ActionsDialog
         title="Create shallow copy"
         size="large"
-        primaryLabel="Save"
+        primaryLabel={selectedIds.size > 0 ? `Create (${selectedIds.size})` : 'Create'}
         primaryIsDisabled={selectedIds.size === 0}
-        primaryAction={() => onConfirm(selectedList)}
+        primaryAction={handleCreate}
         secondaryLabel="Cancel"
         secondaryAction={onCancel}
         closeAction={onCancel}
+        tertiaryRender={() => (
+          <PublishToggle>
+            <Checkbox
+              state={publishInstantly ? 'checked' : 'default'}
+              onChange={() => setPublishInstantly((prev) => !prev)}
+            />
+            <PublishToggleLabel>Publish all instantly</PublishToggleLabel>
+          </PublishToggle>
+        )}
       >
-        <Columns>
-          <Column>
-            <LocationsHeader>
-              <SectionLabel>Choose locations</SectionLabel>
-              <LocationsHeaderActions>
-                <TreeHeaderIconButton type="button" onClick={handleCollapseAll} aria-label="Collapse all">
-                  <img src={collapse16Icon} alt="" width={16} height={16} />
-                </TreeHeaderIconButton>
-                <TreeHeaderIconButton type="button" onClick={handleExpandAll} aria-label="Expand all">
-                  <img src={expand16Icon} alt="" width={16} height={16} />
-                </TreeHeaderIconButton>
-              </LocationsHeaderActions>
-            </LocationsHeader>
+        <FilterRow>
+          <SearchWrap>
+            <SearchIcon />
+            <SearchInput
+              type="text"
+              placeholder="Search folders"
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+              aria-label="Search folders"
+            />
+          </SearchWrap>
+          <FilterActions>
+            <TreeHeaderIconButton type="button" onClick={handleCollapseAll} aria-label="Collapse all">
+              <img src={collapse16Icon} alt="" width={16} height={16} />
+            </TreeHeaderIconButton>
+            <TreeHeaderIconButton type="button" onClick={handleExpandAll} aria-label="Expand all">
+              <img src={expand16Icon} alt="" width={16} height={16} />
+            </TreeHeaderIconButton>
+          </FilterActions>
+        </FilterRow>
 
-            <SearchRow>
-              <SearchIcon />
-              <SearchInput
-                type="text"
-                placeholder="Search folders"
-                value={searchValue}
-                onChange={(e) => setSearchValue(e.target.value)}
-                aria-label="Search folders"
-              />
-            </SearchRow>
-
-            <TreeWrap>
-              <ModalTreeNode
-                node={treeData}
-                depth={0}
-                selectedIds={selectedIds}
-                onToggleSelect={handleToggle}
-                expandedIds={expandedIds}
-                onToggleExpand={handleToggleExpand}
-                query={query}
-              />
-            </TreeWrap>
-          </Column>
-
-          <Column>
-            <ReviewHeader>
-              Review locations <strong>({selectedList.length})</strong>
-            </ReviewHeader>
-            {selectedList.length === 0 ? (
-              <ReviewEmptyState>
-                <img src={emptyFolderIcon} alt="" width={72} height={72} />
-                <ReviewEmptyStateText>No location picked</ReviewEmptyStateText>
-              </ReviewEmptyState>
-            ) : (
-              <ReviewList>
-                {selectedList.map((s) => (
-                  <ReviewItem key={s.id}>
-                    <ReviewItemIcon>
-                      {s.isRoot ? (
-                        <img src={rootIcon} alt="" width={16} height={16} />
-                      ) : (
-                        <img src={folderIcon} alt="" width={16} height={16} />
-                      )}
-                    </ReviewItemIcon>
-                    <ReviewItemBody>
-                      <ReviewItemTitleRow>
-                        <ReviewItemTitle>{s.name}</ReviewItemTitle>
-                        {s.isRoot && (
-                          <RootBadgeWrap>
-                            <BadgeLabel variant="neutral">Root</BadgeLabel>
-                          </RootBadgeWrap>
-                        )}
-                      </ReviewItemTitleRow>
-                      <ReviewItemPath>{s.path}</ReviewItemPath>
-                    </ReviewItemBody>
-                    <ReviewItemRemove
-                      type="button"
-                      onClick={() => handleToggle(s.id)}
-                      aria-label={`Remove ${s.name}`}
-                    >
-                      <CloseIcon />
-                    </ReviewItemRemove>
-                  </ReviewItem>
-                ))}
-              </ReviewList>
-            )}
-          </Column>
-        </Columns>
+        <TreeWrap>
+          <ModalTreeNode
+            node={treeData}
+            depth={0}
+            selectedIds={selectedIds}
+            onToggleSelect={handleToggle}
+            expandedIds={expandedIds}
+            onToggleExpand={handleToggleExpand}
+            query={query}
+          />
+        </TreeWrap>
       </ActionsDialog>
     </ModalWindow>
   );

@@ -6,11 +6,19 @@ import chevronIcon from '../icons/Icons/16px/Common/Search Copy.svg';
 import addIcon from '../icons/Icons/16px/General/Add small.svg';
 import lockIcon from '../icons/Icons/16px/Common/Access rights.svg';
 
-function TreeNode({ node, depth = 0, activeFolderId, onNodeClick }) {
+function hasHighlightedDescendant(node, highlightedFolderIds) {
+  return (node.children || []).some(
+    (child) => highlightedFolderIds.has(child.id) || hasHighlightedDescendant(child, highlightedFolderIds)
+  );
+}
+
+function TreeNode({ node, depth = 0, activeFolderId, onNodeClick, highlightedFolderIds }) {
   const [expanded, setExpanded] = useState(node.expanded || false);
   const isActive = node.id === activeFolderId;
   const isHome = node.type === 'home';
   const showChevron = !isHome;
+  const isHighlighted = highlightedFolderIds.has(node.id);
+  const forceExpanded = hasHighlightedDescendant(node, highlightedFolderIds);
 
   // Home and direct children: 12px, grandchildren: 36px
   const paddingLeft = depth >= 2 ? 36 : 12;
@@ -27,13 +35,13 @@ function TreeNode({ node, depth = 0, activeFolderId, onNodeClick }) {
     }
   };
 
-  // Home node always shows its children
-  const showChildren = isHome ? true : expanded;
+  // Home node always shows its children; auto-expand to reveal a freshly highlighted descendant
+  const showChildren = isHome || expanded || forceExpanded;
 
   return (
     <>
       <div
-        className={`tree-node ${isActive ? 'tree-node--active' : ''}`}
+        className={`tree-node ${isActive ? 'tree-node--active' : ''} ${isHighlighted ? 'tree-node--highlight' : ''}`}
         style={{ paddingLeft: `${paddingLeft}px` }}
         onClick={handleClick}
       >
@@ -81,13 +89,14 @@ function TreeNode({ node, depth = 0, activeFolderId, onNodeClick }) {
           depth={depth + 1}
           activeFolderId={activeFolderId}
           onNodeClick={onNodeClick}
+          highlightedFolderIds={highlightedFolderIds}
         />
       ))}
     </>
   );
 }
 
-function FolderTree({ data, activeFolderId, onNodeClick }) {
+function FolderTree({ data, activeFolderId, onNodeClick, highlightedFolderIds = new Set() }) {
   return (
     <div className="folder-tree">
       <div className="folder-tree-content">
@@ -96,6 +105,7 @@ function FolderTree({ data, activeFolderId, onNodeClick }) {
           depth={0}
           activeFolderId={activeFolderId}
           onNodeClick={onNodeClick}
+          highlightedFolderIds={highlightedFolderIds}
         />
       </div>
     </div>

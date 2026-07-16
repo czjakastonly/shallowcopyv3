@@ -270,6 +270,7 @@ function App() {
   const [showOccurrencesPanel, setShowOccurrencesPanel] = useState(false);
   const [openShallowCopyItem, setOpenShallowCopyItem] = useState(null);
   const [scrollToItemId, setScrollToItemId] = useState(null);
+  const [highlightedFolderIds, setHighlightedFolderIds] = useState(new Set());
 
   const movedItemIds = useRef(new Set());
 
@@ -705,10 +706,11 @@ function App() {
   }, []);
 
   const handleCreateShallowCopyConfirm = useCallback(
-    (selectedLocations) => {
+    (selectedLocations, publishInstantly) => {
       const sourceItem = shallowCopyItem;
       const count = selectedLocations.length;
       const timestamp = Date.now();
+      const status = publishInstantly ? 'published' : 'draft';
 
       const newItems = selectedLocations.map((location, index) => ({
         id: `shallow-copy-${sourceItem.id}-${timestamp}-${index}`,
@@ -717,7 +719,7 @@ function App() {
         type: sourceItem.type,
         steps: sourceItem.steps,
         tags: '-',
-        status: 'draft',
+        status,
         lastEdited: 'A moment ago',
         isShallowCopy: true,
         sourceItemId: sourceItem.id,
@@ -740,6 +742,10 @@ function App() {
       }));
       setActiveOccurrencesItemId(sourceItem.id);
       setShallowCopyItem(null);
+
+      const destinationFolderIds = new Set(selectedLocations.map((location) => location.id));
+      setHighlightedFolderIds(destinationFolderIds);
+      setTimeout(() => setHighlightedFolderIds(new Set()), 1600);
     },
     [shallowCopyItem]
   );
@@ -866,6 +872,7 @@ function App() {
             data={FOLDER_TREE_DATA}
             activeFolderId={activeFolderId}
             onNodeClick={handleTreeNodeClick}
+            highlightedFolderIds={highlightedFolderIds}
           />
         )}
         {currentView === 'content' ? (

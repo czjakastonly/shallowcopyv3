@@ -31,6 +31,19 @@
   background: #f8f8f9;
 }
 
+.tree-node--highlight {
+  animation: tree-node-highlight-flash 1.6s ease-out;
+}
+
+@keyframes tree-node-highlight-flash {
+  0% {
+    background: #ddf3e8;
+  }
+  100% {
+    background: transparent;
+  }
+}
+
 .tree-node-left {
   display: flex;
   align-items: flex-start;

@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import GuideColorIcon from '@stonly/design-system/icons/Guide-color-16';
 import OpenIcon from '@stonly/design-system/icons/Open-16';
 import CloseIcon from '@stonly/design-system/icons/Close-16';
-import HelpIcon from '@stonly/design-system/icons/Help-16';
 import shallowCopyIcon from '../icons/ds-missing/ShallowCopy-16.svg';
 
 const Backdrop = styled.div`
@@ -197,12 +196,10 @@ function ViewOccurrencesPanel({ occurrences, onOpen, onClose }) {
         </Header>
         <Tabs>
           <Tab type="button" $active={activeTab === 'trigger'} onClick={() => setActiveTab('trigger')}>
-            <HelpIcon />
             Trigger
           </Tab>
           <Tab type="button" $active={activeTab === 'embedded'} onClick={() => setActiveTab('embedded')}>
-            <img src={shallowCopyIcon} alt="" width={16} height={16} />
-            Embedded guides
+            Embedded in
           </Tab>
         </Tabs>
         {activeTab === 'embedded' && occurrences.length === 0 && (
