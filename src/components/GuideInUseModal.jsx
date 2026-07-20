@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ModalWindow, ButtonOutline, ButtonPrimary } from '@stonly/design-system';
+import { ModalWindow, ButtonMinimal, ButtonPrimary } from '@stonly/design-system';
 import GuideColorIcon from '@stonly/design-system/icons/Guide-color-16';
 import OpenIcon from '@stonly/design-system/icons/Open-16';
 import shallowCopyIcon from '../icons/ds-missing/ShallowCopy-16.svg';
@@ -17,7 +17,7 @@ const Panel = styled.div`
 const Content = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 16px;
   padding: 32px 32px 24px;
 `;
 
@@ -34,9 +34,9 @@ const Description = styled.p`
 `;
 
 const SectionLabel = styled.p`
-  ${({ theme }) => theme.typography.uiElementLabel};
-  color: ${({ theme }) => theme.color.textSubtle};
-  margin: 0 0 8px;
+  ${({ theme }) => theme.typography.uiElementStrong};
+  color: ${({ theme }) => theme.color.textDefault};
+  margin: 0;
 `;
 
 const ListBox = styled.div`
@@ -150,38 +150,36 @@ function GuideInUseModal({ occurrences, onOpen, onCancel }) {
               To delete it, you must first remove it from the guides listed below.
             </Description>
           </div>
-          <div>
-            <SectionLabel>Embedded Guides ({count})</SectionLabel>
-            <ListBox>
-              {occurrences.map((occ) => (
-                <Item key={occ.id}>
-                  <ItemIcon>
-                    {occ.isShallowCopy ? (
-                      <img src={shallowCopyIcon} alt="" width={16} height={16} />
-                    ) : (
-                      <GuideColorIcon />
-                    )}
-                  </ItemIcon>
-                  <ItemBody>
-                    <ItemTitleRow>
-                      <ItemTitle>{occ.name}</ItemTitle>
-                      {occ.isShallowCopy && <ShallowCopyBadge>Shallow Copy</ShallowCopyBadge>}
-                    </ItemTitleRow>
-                    <ItemDescription>{occ.path}</ItemDescription>
-                  </ItemBody>
-                  <ItemOpenButton type="button" onClick={() => onOpen?.(occ)} aria-label={`Open ${occ.name}`}>
-                    <OpenIcon />
-                  </ItemOpenButton>
-                </Item>
-              ))}
-            </ListBox>
-          </div>
+          <SectionLabel>Embedded in: ({count})</SectionLabel>
+          <ListBox>
+            {occurrences.map((occ) => (
+              <Item key={occ.id}>
+                <ItemIcon>
+                  {occ.isShallowCopy ? (
+                    <img src={shallowCopyIcon} alt="" width={16} height={16} />
+                  ) : (
+                    <GuideColorIcon />
+                  )}
+                </ItemIcon>
+                <ItemBody>
+                  <ItemTitleRow>
+                    <ItemTitle>{occ.name}</ItemTitle>
+                    {occ.isShallowCopy && <ShallowCopyBadge>Shallow Copy</ShallowCopyBadge>}
+                  </ItemTitleRow>
+                  <ItemDescription>{occ.path}</ItemDescription>
+                </ItemBody>
+                <ItemOpenButton type="button" onClick={() => onOpen?.(occ)} aria-label={`Open ${occ.name}`}>
+                  <OpenIcon />
+                </ItemOpenButton>
+              </Item>
+            ))}
+          </ListBox>
         </Content>
         <Divider />
         <Buttons>
-          <ButtonOutline type="button" onClick={onCancel}>
+          <ButtonMinimal type="button" onClick={onCancel}>
             Cancel
-          </ButtonOutline>
+          </ButtonMinimal>
           <ButtonPrimary type="button" disabled>
             Delete
           </ButtonPrimary>
