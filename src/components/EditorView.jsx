@@ -6,6 +6,9 @@ import GuideLinkIcon from '@stonly/design-system/icons/GuideLink-16';
 import GuideColorIcon from '@stonly/design-system/icons/Guide-color-32';
 import ArticleColorIcon from '@stonly/design-system/icons/Article-color-32';
 import GuidedTourColorIcon from '@stonly/design-system/icons/GuidedTour-color-32';
+import GuideColorIcon16 from '@stonly/design-system/icons/Guide-color-16';
+import ArticleColorIcon16 from '@stonly/design-system/icons/Article-color-16';
+import GuidedTourColorIcon16 from '@stonly/design-system/icons/GuidedTour-color-16';
 import EditIcon from '@stonly/design-system/icons/Edit-16';
 import EyeIcon from '@stonly/design-system/icons/Eye-16';
 import ShareIcon from '@stonly/design-system/icons/Share-16';
@@ -326,13 +329,70 @@ const DialogButtonIcon = styled.span`
   }
 `;
 
-function getGuideTypeIcon(type) {
+const SourceGuideCard = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 372px;
+  max-width: 100%;
+  padding: 8px 16px;
+  background: ${({ theme }) => theme.color.backgroundGraySubtlest};
+  border-radius: 4px;
+  box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.08), 0px 2px 4px 0px rgba(0, 0, 0, 0.08);
+`;
+
+const SourceGuideRow = styled.div`
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  width: 100%;
+`;
+
+const SourceGuideIcon = styled.div`
+  display: flex;
+  padding-top: 4px;
+  flex-shrink: 0;
+`;
+
+const SourceGuideText = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+`;
+
+const SourceGuideTitle = styled.p`
+  ${({ theme }) => theme.typography.h3Strong};
+  color: ${({ theme }) => theme.color.textDefault};
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+`;
+
+const SourceGuideBreadcrumb = styled.p`
+  ${({ theme }) => theme.typography.uiElementSmall};
+  color: ${({ theme }) => theme.color.textSubtle};
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+`;
+
+function getGuideTypeIcon(type, size = 32) {
+  if (size === 16) {
+    if (type === 'article') return ArticleColorIcon16;
+    if (type === 'tour' || type === 'guidedTour') return GuidedTourColorIcon16;
+    return GuideColorIcon16;
+  }
   if (type === 'article') return ArticleColorIcon;
   if (type === 'tour' || type === 'guidedTour') return GuidedTourColorIcon;
   return GuideColorIcon;
 }
 
-function EditorView({ item, onBack, onRename, onOpenOriginal }) {
+function EditorView({ item, sourceItem, sourcePath, onBack, onRename, onOpenOriginal }) {
   const [isEditingName, setIsEditingName] = useState(false);
   const [nameDraft, setNameDraft] = useState(item.name);
   const [activeTab, setActiveTab] = useState('editor');
@@ -462,8 +522,24 @@ function EditorView({ item, onBack, onRename, onOpenOriginal }) {
             <EmptyStateText>
               Editor unavailable for shallow copy.
               <br />
-              To change content, edit the original guide.
+              To change content, edit the original guide shown below.
             </EmptyStateText>
+            {sourceItem && (
+              <SourceGuideCard>
+                <SourceGuideRow>
+                  <SourceGuideIcon>
+                    {(() => {
+                      const TypeIcon = getGuideTypeIcon(sourceItem.type, 16);
+                      return <TypeIcon width={16} height={16} />;
+                    })()}
+                  </SourceGuideIcon>
+                  <SourceGuideText>
+                    <SourceGuideTitle>{sourceItem.name}</SourceGuideTitle>
+                    <SourceGuideBreadcrumb>{sourcePath}</SourceGuideBreadcrumb>
+                  </SourceGuideText>
+                </SourceGuideRow>
+              </SourceGuideCard>
+            )}
             <ButtonPrimary type="button" onClick={onOpenOriginal}>
               <DialogButtonIcon aria-hidden>
                 <OpenIcon />

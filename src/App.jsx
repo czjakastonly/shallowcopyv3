@@ -896,9 +896,15 @@ function App() {
   );
 
   if (openShallowCopyItem) {
+    const sourceItem = contentItems.find((i) => i.id === openShallowCopyItem.sourceItemId);
+    const sourcePath = sourceItem
+      ? (findFolderPath(FOLDER_TREE_DATA, sourceItem.folderId) || []).map((p) => p.name).join(' > ')
+      : '';
     return (
       <EditorView
         item={openShallowCopyItem}
+        sourceItem={sourceItem}
+        sourcePath={sourcePath}
         onBack={handleCloseShallowCopyDialog}
         onRename={handleRenameShallowCopy}
         onOpenOriginal={handleOpenOriginalGuideEditor}
